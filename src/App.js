@@ -1,13 +1,17 @@
 import React from "react";
-import { ParticleBackground } from "./components";
+import './less/index.css'
+import { LoginPage } from './components'
+// import { Routes, Route } from 'react-router-dom'
 
 
 function App() {
 
   return (
-    <div className="App">
-      <ParticleBackground />
-    </div>
+    <>
+      <div className="App">
+        <LoginPage />
+      </div>
+    </>
   );
 }
 
