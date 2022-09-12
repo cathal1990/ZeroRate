@@ -1,7 +1,7 @@
 import React from "react";
 import './less/index.css'
-import { LoginPage } from './components'
-// import { Routes, Route } from 'react-router-dom'
+import { LoginPage, DashboardPage } from './components'
+import { Routes, Route } from 'react-router-dom'
 
 
 function App() {
@@ -9,7 +9,10 @@ function App() {
   return (
     <>
       <div className="App">
-        <LoginPage />
+        <Routes>
+          <Route index element={<LoginPage />} />
+          <Route path={'/dashboard'} element={<DashboardPage />} />
+        </Routes>
       </div>
     </>
   );

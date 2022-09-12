@@ -6,12 +6,10 @@ import '../less/index.css'
 function ParticleBackground() {
 
     const particlesInit = React.useCallback(async (engine) => {
-        console.log(engine);
         await loadFull(engine);
     }, []);
 
     const particlesLoaded = React.useCallback(async (container) => {
-        console.log(await container)
     }, []);
 
   return (
