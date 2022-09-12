@@ -1,7 +1,7 @@
 import React from 'react'
 import { ParticleBackground } from "../components";
 import '../less/index.css'
-import logo from '../ZRnew.png'
+import logo from '../images/ZRnew.png'
 
 function Login() {
   const [userName, setUserName] = React.useState('');
@@ -20,7 +20,7 @@ function Login() {
   return (
     <>
       <ParticleBackground />
-        <img id="logo" src={logo} />
+      <img id="logo" src={logo} />
       <div className="login-container">
           <div className="login-form">
             <p>ZeroRate</p>
