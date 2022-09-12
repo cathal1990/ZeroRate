@@ -11,11 +11,12 @@ function Login() {
       <ParticleBackground />
       <div className="login-container">
           <div className="login-form">
-            <p>LOGIN</p>
+            <p>ZeroRate</p>
             <form id="login-form">
               <input type='text' name='username' placeholder="UserName" onChange={(e) => setUserName(e.target.value)} value={userName}></input>
               <input type='password' name='password' placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
             </form>
+            <button>Login</button>
           </div>
       </div>
     </>

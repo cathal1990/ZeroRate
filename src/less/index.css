@@ -22,7 +22,7 @@
   align-items: center;
   pointer-events: all;
   border: 4px solid white;
-  padding: 50px;
+  padding: 40px 50px 50px 50px;
   background: rgba(255, 255, 255, 0.25);
   box-shadow: 0 8px 32px 0 rgba(210, 134, 21, 0.37);
   backdrop-filter: blur(5px);
@@ -32,6 +32,10 @@
 }
 .login-container .login-form p {
   font-size: 30px;
+  padding-bottom: 40px;
+}
+.login-container .login-form button {
+  border-radius: 6px;
 }
 .login-container .login-form #login-form {
   display: flex;
