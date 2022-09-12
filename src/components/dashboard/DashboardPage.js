@@ -1,8 +1,26 @@
 import React from 'react'
 import { Navbar } from '../'
 import moneyIcon from '../../images/money-svgrepo-com.svg'
+import { apiKey, secret } from '../../config.js'
+const ccxt = require('ccxt');
 
 function DashboardPage() {
+    const [marketList, setMarketList] = React.useState({})
+    let binance = new ccxt.binance();
+    binance.options = {
+        'defaultType': 'future',
+        'adjustForTimeDifference': 'true'
+    }
+    // ftx.proxy = 'http://localhost:3000/dashboard/'
+
+    const markets = async() => {
+        // const markets = await binance.loadMarkets()
+        const market2 = await binance.fetchFundingRate('FTMUSDT')
+        console.log(market2)
+        // setMarketList(markets)
+    }
+    markets()
+
   return (
     <>
         <Navbar />
