@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from '../images/ZRnew.png'
+import logo from '../images/ZRblend1.png'
 import { Link, NavLink } from 'react-router-dom'
 
 function Navbar() {

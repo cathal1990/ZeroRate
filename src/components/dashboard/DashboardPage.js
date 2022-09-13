@@ -38,6 +38,7 @@ function DashboardPage() {
     }
 
     const returnsPerMonth = (capital, apy, leverage, coin) => {
+        if (capital === '$' || !capital) return '$' + 0;
         const capitalNum = parseInt(capital.slice(1), 10)
         return '$' + (((capitalNum * (coin.apy / 100)) / 12) * leverageValue).toFixed(2)
     }
@@ -61,11 +62,11 @@ console.log(tickerList)
                 <h1>Filters</h1>
                 <div className='capital-container'>
                 <label htmlFor='capital'>Capital</label>
-                <input className='capital-input' type='text' name='capital' onChange={(e) => setCapitalValue(e.target.value)} value={capitalValue}/>
+                <input className='capital-input' type='text' name='capital' onChange={(e) => setCapitalValue(e.target.value)} value={capitalValue === '' ? '$' : capitalValue}/>
                 </div>
                 <div className='leverage-slider-container'>
-                    <label htmlFor='leverage'>Leverage</label>
-                    <input min={1} max={10} type='range' name='leverage' id='leverage-slider' onChange={(e) => setLeverageValue(e.target.valueAsNumber)} value={leverageValue}/>
+                    <label htmlFor='leverage'>Leverage ({leverageValue}x)</label>
+                    <span>1x<input min={1} max={10} type='range' name='leverage' id='leverage-slider' onChange={(e) => setLeverageValue(e.target.valueAsNumber)} value={leverageValue}/>10x</span>
                 </div>
             </div>
             <div className='trade-opps-container'>

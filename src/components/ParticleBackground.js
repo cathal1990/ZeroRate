@@ -64,7 +64,7 @@ function ParticleBackground() {
             line_linked: {
               enable: true,
               distance: 150,
-              color: "#f28b24",
+              color: "#b8cae2",
               opacity: 0.3,
               width: 2
             },

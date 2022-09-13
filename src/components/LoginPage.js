@@ -1,7 +1,7 @@
 import React from 'react'
 import { ParticleBackground } from "../components";
 import '../less/index.css'
-import logo from '../images/ZRnew.png'
+import logo from '../images/ZRblend1.png'
 
 function Login() {
   const [userName, setUserName] = React.useState('');
