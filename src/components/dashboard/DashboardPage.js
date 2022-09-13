@@ -1,11 +1,13 @@
 import React from 'react'
 import { Navbar } from '../'
 import moneyIcon from '../../images/money-svgrepo-com.svg'
-import { apiKey, secret } from '../../config.js'
+import { coins } from '../../config.js'
 const ccxt = require('ccxt');
 
 function DashboardPage() {
-    const [marketList, setMarketList] = React.useState({})
+    const [marketList, setMarketList] = React.useState([])
+    const [fundingRates, setFundingRates] = React.useState([])
+
     let binance = new ccxt.binance();
     binance.options = {
         'defaultType': 'future',
@@ -13,13 +15,22 @@ function DashboardPage() {
     }
     // ftx.proxy = 'http://localhost:3000/dashboard/'
 
-    const markets = async() => {
-        // const markets = await binance.loadMarkets()
-        const market2 = await binance.fetchFundingRate('FTMUSDT')
-        console.log(market2)
-        // setMarketList(markets)
+    const tableData = [];
+    for (let key in fundingRates) {
+        tableData.push(fundingRates[key])
     }
-    markets()
+
+
+    React.useEffect(() => {
+        const loadMarkets = async() => {
+            // await binance.loadMarkets();
+            const fundingRates = await binance.fetchFundingRates(coins)
+            setFundingRates(fundingRates)
+            // coins.forEach((coin) => setMarketList(prevList => [...prevList, binance.fetchFundingRate(coin)]))
+            }
+            loadMarkets()
+        }
+    , [])
 
   return (
     <>
@@ -52,7 +63,21 @@ function DashboardPage() {
                         </tr>
                     </thead>
                     <tbody className='table-body'>
-
+                        {tableData ? tableData.map((coin, i) => {
+                            return (
+                                <tr key={i}>
+                                    <td><span>{coin.symbol}</span></td>
+                                    <td><span>Binanace</span></td>
+                                    <td><span>{Math.abs((((coin.fundingRate * 100) * 3) * 365).toFixed(2))}%</span></td>
+                                    <td><span>{((Math.pow(1 + Math.abs((((coin.fundingRate * 100) * 3) * 365) / 100) / 1095, 1095) - 1) * 100).toFixed(2)}%</span></td>
+                                    <td><span>{coin.symbol}</span></td>
+                                    <td><span>{coin.symbol}</span></td>
+                                    <td><span>{coin.symbol}</span></td>
+                                    <td><span>{coin.symbol}</span></td>
+                                </tr>
+                            )
+                        })
+                         : <></>}
                     </tbody>
                 </table>
             </div>
