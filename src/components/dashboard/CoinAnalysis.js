@@ -1,6 +1,8 @@
 import React from 'react'
 import { Navbar } from '../'
 import { coins } from '../../config.js'
+import Highcharts from 'highcharts'
+import HighchartsReact from 'highcharts-react-official'
 const ccxt = require('ccxt');
 
 
@@ -13,14 +15,17 @@ function CoinAnalysis() {
         'adjustForTimeDifference': 'true'
     }
 
+
     React.useEffect(() => {
         const loadData = async() => {
+            debugger
             const chartData = []
             for (let i = 0; i < coins.length; i++) {
-                const data = await binance.fetchFundingRateHistory(coins[i])
-                const coinData = [];
-                for (let j = 0; j < data.length; j++) {
-                    coinData.push([data[j].timestamp, data[j].fundingRate * 100])
+                const fundingData = await binance.fetchFundingRateHistory(coins[i])
+                const coinData = { data: []};
+
+                for (let j = 0; j < fundingData.length; j++) {
+                    coinData['data'].push([fundingData[j].timestamp, fundingData[j].fundingRate * 100])
                 }
                 chartData.push(coinData)
             }
@@ -30,11 +35,20 @@ function CoinAnalysis() {
     }
     , [])
 
-    console.log(rateHistory)
+    const options = {
+        title: {
+          text: 'My chart'
+        },
+        series: rateHistory
+      }
+console.log(rateHistory)
 
   return (
     <>
         <Navbar />
+        <div>
+            <HighchartsReact highcharts={Highcharts} options={options} />
+        </div>
     </>
   )
 }
