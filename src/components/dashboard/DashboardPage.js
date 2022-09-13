@@ -5,8 +5,9 @@ import { coins } from '../../config.js'
 const ccxt = require('ccxt');
 
 function DashboardPage() {
-    const [marketList, setMarketList] = React.useState([])
     const [fundingRates, setFundingRates] = React.useState([])
+    const [leverageValue, setLeverageValue] = React.useState(5)
+    const [capitalValue, setCapitalValue] = React.useState('$10000')
 
     let binance = new ccxt.binance();
     binance.options = {
@@ -16,17 +17,19 @@ function DashboardPage() {
     // ftx.proxy = 'http://localhost:3000/dashboard/'
 
     const tableData = [];
+    let index = 0;
     for (let key in fundingRates) {
         tableData.push(fundingRates[key])
+        tableData[index].apr = Math.abs((((fundingRates[key].fundingRate * 100) * 3) * 365).toFixed(2))
+        tableData[index].apy = ((Math.pow(1 + Math.abs((((fundingRates[key].fundingRate * 100) * 3) * 365) / 100) / 1095, 1095) - 1) * 100).toFixed(2)
+        index += 1;
     }
 
 
     React.useEffect(() => {
         const loadMarkets = async() => {
-            // await binance.loadMarkets();
             const fundingRates = await binance.fetchFundingRates(coins)
             setFundingRates(fundingRates)
-            // coins.forEach((coin) => setMarketList(prevList => [...prevList, binance.fetchFundingRate(coin)]))
             }
             loadMarkets()
         }
@@ -38,6 +41,14 @@ function DashboardPage() {
         <div className='dashboard-container'>
             <div className='sidebar-container'>
                 <h2>Filters</h2>
+                <div className='capital-container'>
+                <label htmlFor='capital'>Capital</label>
+                <input className='capital-input' type='text' name='capital' onChange={(e) => setCapitalValue(e.target.value)} value={capitalValue}/>
+                </div>
+                <div className='leverage-slider-container'>
+                    <label htmlFor='leverage'>Leverage</label>
+                    <input min={1} max={10} type='range' name='leverage' id='leverage-slider' onChange={(e) => setLeverageValue(e.target.valueAsNumber)} value={leverageValue}/>
+                </div>
             </div>
             <div className='trade-opps-container'>
                 <div className='title-bar'>
@@ -68,10 +79,10 @@ function DashboardPage() {
                                 <tr key={i}>
                                     <td><span>{coin.symbol}</span></td>
                                     <td><span>Binanace</span></td>
-                                    <td><span>{Math.abs((((coin.fundingRate * 100) * 3) * 365).toFixed(2))}%</span></td>
-                                    <td><span>{((Math.pow(1 + Math.abs((((coin.fundingRate * 100) * 3) * 365) / 100) / 1095, 1095) - 1) * 100).toFixed(2)}%</span></td>
-                                    <td><span>{coin.symbol}</span></td>
-                                    <td><span>{coin.symbol}</span></td>
+                                    <td><span>{coin.apr}%</span></td>
+                                    <td><span>{coin.apy}%</span></td>
+                                    <td><span>{(coin.apr * leverageValue).toFixed(2)}%</span></td>
+                                    <td><span>{(coin.apy * leverageValue).toFixed(2)}%</span></td>
                                     <td><span>{coin.symbol}</span></td>
                                     <td><span>{coin.symbol}</span></td>
                                 </tr>

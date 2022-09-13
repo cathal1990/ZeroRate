@@ -94,10 +94,21 @@
 }
 .dashboard-container .sidebar-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 250px;
   background-color: #799ac5;
+}
+.dashboard-container .sidebar-container .capital-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.dashboard-container .sidebar-container .leverage-slider-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 .dashboard-container .trade-opps-container {
   display: flex;
@@ -112,6 +123,9 @@
   border-radius: 20px;
   background-color: #232323;
   color: white;
+}
+.dashboard-container .trade-opps-container .trade-opps-table .table-header {
+  text-decoration: underline;
 }
 .dashboard-container .trade-opps-container .title-bar {
   display: flex;
