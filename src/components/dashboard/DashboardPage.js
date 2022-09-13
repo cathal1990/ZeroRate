@@ -6,6 +6,7 @@ const ccxt = require('ccxt');
 
 function DashboardPage() {
     const [fundingRates, setFundingRates] = React.useState([])
+    const [tickerList, setTickerList] = React.useState([])
     const [leverageValue, setLeverageValue] = React.useState(5)
     const [capitalValue, setCapitalValue] = React.useState('$10000')
 
@@ -22,25 +23,42 @@ function DashboardPage() {
         tableData.push(fundingRates[key])
         tableData[index].apr = Math.abs((((fundingRates[key].fundingRate * 100) * 3) * 365).toFixed(2))
         tableData[index].apy = ((Math.pow(1 + Math.abs((((fundingRates[key].fundingRate * 100) * 3) * 365) / 100) / 1095, 1095) - 1) * 100).toFixed(2)
+        tableData[index].volume = tickerList[fundingRates[key].symbol].quoteVolume;
         index += 1;
     }
 
+    const numFormatter = (num) => {
+        if(num > 999 && num < 1000000){
+            return (num/1000).toFixed(1) + 'K'; // convert to K for number from > 1000 < 1 million
+        }else if(num > 1000000000){
+            return (num/1000000000).toFixed(1) + 'B'
+        }else if(num > 1000000){
+            return (num/1000000).toFixed(1) + 'M'; // convert to M for number from > 1 million
+        }
+    }
+
+    const returnsPerMonth = (capital, apy, leverage, coin) => {
+        const capitalNum = parseInt(capital.slice(1), 10)
+        return '$' + (((capitalNum * (coin.apy / 100)) / 12) * leverageValue).toFixed(2)
+    }
 
     React.useEffect(() => {
         const loadMarkets = async() => {
             const fundingRates = await binance.fetchFundingRates(coins)
+            const tickers = await binance.fetchTickers(coins)
             setFundingRates(fundingRates)
+            setTickerList(tickers)
             }
             loadMarkets()
         }
     , [])
-
+console.log(tickerList)
   return (
     <>
         <Navbar />
         <div className='dashboard-container'>
             <div className='sidebar-container'>
-                <h2>Filters</h2>
+                <h1>Filters</h1>
                 <div className='capital-container'>
                 <label htmlFor='capital'>Capital</label>
                 <input className='capital-input' type='text' name='capital' onChange={(e) => setCapitalValue(e.target.value)} value={capitalValue}/>
@@ -54,7 +72,7 @@ function DashboardPage() {
                 <div className='title-bar'>
                     <div className='trade-opps-title'>
                         <img id="money-icon" src={moneyIcon} />
-                        <h3>Trade Opportunities</h3>
+                        <h2>Trade Opportunities</h2>
                     </div>
                     <div className='trade-opps-searchbar'>
                         <input type="text" className="search-bar" placeholder="Search..." />
@@ -76,15 +94,15 @@ function DashboardPage() {
                     <tbody className='table-body'>
                         {tableData ? tableData.map((coin, i) => {
                             return (
-                                <tr key={i}>
+                                <tr key={i} className={i % 2 !== 0 ? 'light-row' : 'dark-row'}>
                                     <td><span>{coin.symbol}</span></td>
-                                    <td><span>Binanace</span></td>
+                                    <td><span>Binance</span></td>
                                     <td><span>{coin.apr}%</span></td>
                                     <td><span>{coin.apy}%</span></td>
                                     <td><span>{(coin.apr * leverageValue).toFixed(2)}%</span></td>
                                     <td><span>{(coin.apy * leverageValue).toFixed(2)}%</span></td>
-                                    <td><span>{coin.symbol}</span></td>
-                                    <td><span>{coin.symbol}</span></td>
+                                    <td><span>{returnsPerMonth(capitalValue, Number(coin.apy), leverageValue, coin)}</span></td>
+                                    <td><span>{numFormatter(coin.volume)}</span></td>
                                 </tr>
                             )
                         })

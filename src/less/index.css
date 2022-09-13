@@ -1,7 +1,10 @@
 * {
   margin: 0px;
   box-sizing: border-box;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+body {
+  background-color: #d6d6d6;
 }
 #tsparticles {
   position: fixed;
@@ -16,7 +19,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: #3e4754;
+  background-color: #151a21;
 }
 #navbar #navbar-logo {
   display: flex;
@@ -91,19 +94,29 @@
 }
 .dashboard-container {
   display: flex;
+  height: 100vh;
+  width: 100vw;
 }
 .dashboard-container .sidebar-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   width: 250px;
   background-color: #799ac5;
+}
+.dashboard-container .sidebar-container h1 {
+  margin: 15px 0 0 0;
+  text-decoration: underline;
 }
 .dashboard-container .sidebar-container .capital-container {
   display: flex;
   align-items: center;
   flex-direction: column;
+  margin: 15px 0 15px 0;
+}
+.dashboard-container .sidebar-container .capital-container input {
+  text-align: center;
 }
 .dashboard-container .sidebar-container .leverage-slider-container {
   display: flex;
@@ -114,24 +127,46 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  background-color: #b1b1b1;
+  background-color: #d6d6d6;
+  margin: 15px;
 }
 .dashboard-container .trade-opps-container .trade-opps-table {
   text-align: center;
   width: 100%;
-  border: 4px solid #232323;
+  border: 4px solid #323232;
   border-radius: 20px;
-  background-color: #232323;
+  background-color: #323232;
   color: white;
+  border-collapse: separate;
+  border: none;
+  border-spacing: 0 1em;
+}
+.dashboard-container .trade-opps-container .trade-opps-table .table-body tr {
+  border-radius: 8px;
+}
+.dashboard-container .trade-opps-container .trade-opps-table .table-body td {
+  border-radius: 8px;
+  padding: 20px;
+}
+.dashboard-container .trade-opps-container .trade-opps-table .table-body .light-row {
+  background-color: white;
+  color: black;
+}
+.dashboard-container .trade-opps-container .trade-opps-table .table-body .dark-row {
+  background-color: #d6d6d6;
+  color: black;
 }
 .dashboard-container .trade-opps-container .trade-opps-table .table-header {
   text-decoration: underline;
 }
+.dashboard-container .trade-opps-container .trade-opps-table .table-header tr .table-header-column {
+  padding: 5px 0 15px 0;
+}
 .dashboard-container .trade-opps-container .title-bar {
   display: flex;
-  flex: 1;
   justify-content: space-between;
   align-items: center;
+  margin: 0 0 10px 0;
 }
 .dashboard-container .trade-opps-container .title-bar .trade-opps-searchbar {
   margin: 0 20px 0 0;
