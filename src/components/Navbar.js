@@ -7,8 +7,8 @@ function Navbar() {
     <nav id="navbar">
         <Link to="/dashboard"><img id="navbar-logo" src={logo} /></Link>
         <div className="navbar-links">
-            <Link to="/dashboard/tradeopps">Trade opps</Link>
-            <Link to="/dashboard/coinanalysis">Coin analysis</Link>
+            <Link to="/dashboard">Trade opps</Link>
+            <Link to="/dashboard/coin-analysis">Coin analysis</Link>
         </div>
         <Link to="/" id="logout">Logout</Link>
     </nav>

@@ -15,18 +15,34 @@ function CoinAnalysis() {
         'adjustForTimeDifference': 'true'
     }
 
+    const months = {
+        '01': 'Jan',
+        '02': 'Feb',
+        '03': 'Mar',
+        '04': 'Apr',
+        '05': 'May',
+        '06': 'Jun',
+        '07': 'Jul',
+        '08': 'Aug',
+        '09': 'Sep',
+        '10': 'Oct',
+        '11': 'Nov',
+        '12': 'Dec'
+    }
+
 
     React.useEffect(() => {
         const loadData = async() => {
-            debugger
             const chartData = []
             for (let i = 0; i < coins.length; i++) {
                 const fundingData = await binance.fetchFundingRateHistory(coins[i])
-                const coinData = { data: []};
+                const coinData = { data: [], name: '', dateTime: []};
 
                 for (let j = 0; j < fundingData.length; j++) {
-                    coinData['data'].push([fundingData[j].datetime.split(':')[0], fundingData[j].fundingRate * 100])
+                    coinData['data'].push([fundingData[j].fundingRate * 100])
+                    coinData['dateTime'].push({day: `${fundingData[j].datetime.split('-')[2].slice(0,2)}. ${months[fundingData[j].datetime.split('-')[1]]}`})
                 }
+                coinData['name'] = fundingData[i].symbol
                 chartData.push(coinData)
             }
             setRateHistory(chartData)
@@ -34,20 +50,44 @@ function CoinAnalysis() {
         loadData()
     }
     , [])
+    console.log(rateHistory)
+
+    const styles = {
+
+    }
 
     const options = {
+        yAxis: {
+            title: {
+                text: 'Funding Rate'
+            }
+        },
+        xAxis: {
+            categories: rateHistory.length > 0 ? rateHistory[0].dateTime : '',
+
+            labels: {
+                formatter: function () {
+                    return this.value.day
+                }
+            }
+        },
         title: {
           text: 'Funding of different coins'
         },
-        series: rateHistory
+        series: rateHistory,
+        legend: {
+            labelFormatter: function () {
+                return this.name;
+            }
+        }
       }
 console.log(rateHistory)
 
   return (
     <>
         <Navbar />
-        <div>
-            <HighchartsReact highcharts={Highcharts} options={options} />
+        <div className='highcharts-container'>
+            <HighchartsReact containerProps={{ className: "main-highchart" }} highcharts={Highcharts} options={options} />
         </div>
     </>
   )
