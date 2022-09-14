@@ -25,7 +25,7 @@ function CoinAnalysis() {
                 const coinData = { data: []};
 
                 for (let j = 0; j < fundingData.length; j++) {
-                    coinData['data'].push([fundingData[j].timestamp, fundingData[j].fundingRate * 100])
+                    coinData['data'].push([fundingData[j].datetime.split(':')[0], fundingData[j].fundingRate * 100])
                 }
                 chartData.push(coinData)
             }
@@ -37,7 +37,7 @@ function CoinAnalysis() {
 
     const options = {
         title: {
-          text: 'My chart'
+          text: 'Funding of different coins'
         },
         series: rateHistory
       }
