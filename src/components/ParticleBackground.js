@@ -112,11 +112,11 @@ function ParticleBackground() {
                 speed: 2
               },
               repulse: {
-                distance: 100,
-                duration: 0.4
+                distance: 2,
+                duration: 0.1
               },
               push: {
-                particles_nb: 20
+                particles_nb: 10
               },
               remove: {
                 particles_nb: 10

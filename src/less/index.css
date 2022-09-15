@@ -120,6 +120,8 @@ body {
 }
 .dashboard-container .sidebar-container .capital-container input {
   text-align: center;
+  height: 30px;
+  font-size: 15px;
   border-radius: 7px;
 }
 .dashboard-container .sidebar-container .leverage-slider-container {
@@ -189,6 +191,9 @@ body {
 }
 .main-highchart {
   display: flex;
-  height: 100%;
+  border: 2px solid #151a21;
+  border-radius: 7px;
+  height: 600px;
   margin: 50px 100px 50px 100px;
+  stroke-linecap: 'round';
 }

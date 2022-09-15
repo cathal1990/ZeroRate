@@ -44,19 +44,33 @@ function CoinAnalysis() {
                 }
                 coinData['name'] = fundingData[i].symbol
                 chartData.push(coinData)
+
             }
             setRateHistory(chartData)
         }
         loadData()
     }
     , [])
-    console.log(rateHistory)
 
-    const styles = {
-
-    }
 
     const options = {
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            split: true,
+            valueDecimals: 6
+        },
+        plotOptions: {
+            series: {
+                shadow: true,
+                marker: {
+                    enabled: false,
+                }
+            }
+        },
+        credits: {
+            enabled: false,
+        },
         yAxis: {
             title: {
                 text: 'Funding Rate'
@@ -78,7 +92,7 @@ function CoinAnalysis() {
         legend: {
             labelFormatter: function () {
                 return this.name;
-            }
+            },
         }
       }
 console.log(rateHistory)
