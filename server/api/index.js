@@ -1,9 +1,9 @@
 const express = require('express')
 const router = require('express').Router();
-// const campusesRouter = require('./routes/campuses')
+const loginRouter = require('./routes/login.js')
 // const studentsRouter = require('./routes/students')
 
-// router.use('/campuses', campusesRouter);
+router.use('/auth', loginRouter);
 // router.use('/students', studentsRouter);
 
 

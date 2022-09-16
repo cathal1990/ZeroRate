@@ -1,3 +1,5 @@
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
 const db = require('../database')
 const Sequelize = require('sequelize')
 
@@ -14,25 +16,32 @@ const User = db.define('user', {
     },
 })
 
-User.prototype.generateToken = function() {
-    return { token: this.id }
-}
+User.prototype.generateToken = async function () {
+    try {
+      const token = await jwt.sign({ username: this.username, id: this.id }, process.env.ACCESS_TOKEN_SECRET);
+      return { token };
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-User.byToken = async(token) => {
-    try{
-        const user = await User.findByPk(token);
-        if(user) { return user }
-
-        const error = Error('Bad credentials')
-        error.or.status = 401;
+User.byToken = async function(token) {
+    try {
+        const payload = await jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        if (payload) {
+        //find user by payload which contains the user id
+        const user = await User.findByPk(payload.id);
+        return user;
+        }
+        const error = Error("Invalid Username or password");
+        error.status = 401;
+        throw error;
+    } catch (ex) {
+        const error = Error("Invalid Username or password");
+        error.status = 401;
         throw error;
     }
-    catch{
-        const error = Error('Bad credentials')
-        error.or.status = 401;
-        throw error;
-    }
-}
+};
 
 User.authenticate = async({username, password}) => {
     const user = await User.findOne({
@@ -42,10 +51,9 @@ User.authenticate = async({username, password}) => {
         }
     })
 
-    if (user) { return user.id }
+    if (user) { return user }
 
-    const error = Error('Bad credentials')
-        error.or.status = 401;
+    const error = Error('Invalid Username or password');
         throw error;
 }
 
