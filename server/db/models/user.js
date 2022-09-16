@@ -2,6 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const db = require('../database')
 const Sequelize = require('sequelize')
+const bcrypt = require('bcrypt')
 
 const User = db.define('user', {
     username: {
@@ -44,17 +45,33 @@ User.byToken = async function(token) {
 };
 
 User.authenticate = async({username, password}) => {
-    const user = await User.findOne({
-        where: {
-            username,
-            password
+    try{
+        const user = await User.findOne({
+            where: {
+                username,
+            }
+        })
+
+        if (user) {
+            const match = await bcrypt.compare(password, user.password);
+
+            return match ? user : null
         }
-    })
 
-    if (user) { return user }
-
-    const error = Error('Invalid Username or password');
+        const error = Error("Invalid Username or password");
+        error.status = 404;
         throw error;
+    }
+    catch(err) {
+        console.log(err)
+    }
+
 }
+
+User.addHook('beforeCreate', async(user)=> {
+    if(user.changed('password')){
+      user.password = await bcrypt.hash(user.password, 5);
+    }
+  });
 
 module.exports = { User }

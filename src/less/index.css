@@ -76,16 +76,32 @@ body {
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
+.login-container .login-form #login-failed {
+  background-color: lightpink;
+  color: firebrick;
+  font-weight: bold;
+  padding: 0.5rem;
+  font-size: 25px;
+  margin-bottom: 0.75rem;
+  border-radius: 5px;
+}
+.login-container .login-form .offscreen {
+  position: absolute;
+  left: -9999px;
+}
 .login-container .login-form p {
   font-size: 30px;
   padding-bottom: 40px;
 }
-.login-container .login-form button {
-  border-radius: 6px;
-}
 .login-container .login-form #login-form {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+.login-container .login-form #login-form button {
+  border-radius: 6px;
+  width: 75px;
+  height: 25px;
 }
 .login-container .login-form #login-form input {
   margin: 20px;
@@ -129,6 +145,9 @@ body {
   align-items: center;
   flex-direction: column;
   margin: 15px 0 15px 0;
+}
+.dashboard-container .sidebar-container .leverage-slider-container input {
+  cursor: pointer;
 }
 .dashboard-container .trade-opps-container {
   display: flex;

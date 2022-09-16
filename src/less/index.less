@@ -88,18 +88,36 @@ body {
     border-radius: 10px;
     border: 1px solid rgba( 255, 255, 255, 0.18 );
 
+    #login-failed {
+      background-color: lightpink;
+      color: firebrick;
+      font-weight: bold;
+      padding: 0.5rem;
+      font-size: 25px;
+      margin-bottom: 0.75rem;
+      border-radius: 5px;
+    }
+
+    .offscreen {
+      position: absolute;
+      left: -9999px;
+  }
+
     p {
       font-size: 30px;
       padding-bottom: 40px;
     }
 
-    button {
-      border-radius: 6px;
-    }
-
     #login-form {
       display: flex;
       flex-direction: column;
+      align-items: center;
+
+      button {
+        border-radius: 6px;
+        width: 75px;
+        height: 25px;
+      }
 
       input {
         margin: 20px;
@@ -153,6 +171,10 @@ body {
       align-items: center;
       flex-direction: column;
       margin: 15px 0 15px 0;
+
+      input {
+        cursor: pointer;
+      }
 
     }
   }

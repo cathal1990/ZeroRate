@@ -1,4 +1,4 @@
-POST http://localhost:3000/api/auth
+POST http://localhost:3001/api/auth
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/api/auth
+GET http://localhost:3001/api/auth
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNvcnkiLCJpZCI6MywiaWF0IjoxNjYzMjg0MzQ3fQ.EwQCDKN72HDCfW9ll35SRVNnfXOZrpuO1vmqHmF08nA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNvcnkiLCJpZCI6NSwiaWF0IjoxNjYzMzI4NjkzfQ.7agTSy5qlMdp0eWXw_6_sIVo_qSE1Tq49baFDg1oUmA
 

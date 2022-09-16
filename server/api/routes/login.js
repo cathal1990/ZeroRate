@@ -26,9 +26,15 @@ if(req.user) {
 router.post('/', async (req, res, next) => {
     try{
         const user = await User.authenticate(req.body)
-        if(!user) res.sendStatus(404);
-        const token = await user.generateToken();
-        res.send(token);
+        console.log(req.body)
+        // if(!user) {
+        //   res.sendStatus(404)
+        // }
+        if(user) {
+          const token = await user.generateToken();
+          res.send(token);
+        }
+        res.sendStatus(404)
     }
     catch(err) {
         next(err);
