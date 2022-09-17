@@ -2,7 +2,7 @@ import React from 'react'
 import { ParticleBackground } from "../components";
 import '../less/index.css'
 import logo from '../images/ZRblend1.png'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 
@@ -10,10 +10,10 @@ function Login() {
   const userRef = React.useRef();
   const errRef = React.useRef();
   const navigate = useNavigate();
+
   const [userName, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errMsg, setErrMsg] = React.useState('');
-  const [success, setSuccess] = React.useState(false);
 
   React.useEffect(() => {
     userRef.current.focus();
@@ -49,7 +49,7 @@ function Login() {
   return (
     <>
       <ParticleBackground />
-      <img id="logo" src={logo} />
+      <img id="logo" src={logo} alt="ZeroRate"/>
       <div className="login-container">
           <div className="login-form">
             <p id='login-failed' ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>

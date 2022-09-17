@@ -3,11 +3,14 @@ import { Navbar } from '../'
 import { coins } from '../../config.js'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
+import noDataToDisplay from 'highcharts/modules/no-data-to-display';
+import axios from 'axios'
 const ccxt = require('ccxt');
 
 
 function CoinAnalysis() {
     const [rateHistory, setRateHistory] = React.useState([])
+    const [authorized, setAuthorized] = React.useState(false)
 
     let binance = new ccxt.binance();
     binance.options = {
@@ -32,6 +35,20 @@ function CoinAnalysis() {
 
 
     React.useEffect(() => {
+        try{
+            const checkToken = async() => {
+            const token = window.localStorage.getItem('token');
+            if (token) {
+                const {data} = await axios.get('/api/auth', {
+                    headers: {
+                        authorization: token
+                      }
+                });
+                data ? setAuthorized(true) : setAuthorized(false);
+            }
+        }
+        checkToken()
+
         const loadData = async() => {
             const chartData = []
             for (let i = 0; i < coins.length; i++) {
@@ -50,10 +67,25 @@ function CoinAnalysis() {
         }
         loadData()
     }
+    catch(err) {
+        console.log(err)
+    }
+    }
     , [])
 
+    noDataToDisplay(Highcharts)
 
     const options = {
+        lang: {
+            noData: 'Loading data from exchange...'
+          },
+        noData: {
+            style: {
+              fontWeight: 'bold',
+              fontSize: '25px',
+              color: '151a21'
+            }
+          },
         tooltip: {
             crosshairs: true,
             shared: true,
@@ -95,14 +127,17 @@ function CoinAnalysis() {
             },
         }
       }
-console.log(rateHistory)
 
   return (
     <>
-        <Navbar />
-        <div className='highcharts-container'>
-            <HighchartsReact containerProps={{ className: "main-highchart" }} highcharts={Highcharts} options={options} />
-        </div>
+        {authorized ?
+            <>
+                <Navbar />
+                <div className='highcharts-container'>
+                    <HighchartsReact containerProps={{ className: "main-highchart" }} highcharts={Highcharts} options={options} />
+                </div>
+            </>
+        : <h1>NOT AUTHORISED</h1>}
     </>
   )
 }

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Navbar } from '../'
+import { Navbar, Pagination } from '../'
 import moneyIcon from '../../images/money-svgrepo-com.svg'
 import { coins } from '../../config.js'
+import axios from 'axios'
 const ccxt = require('ccxt');
 
 function DashboardPage() {
@@ -9,6 +10,10 @@ function DashboardPage() {
     const [tickerList, setTickerList] = React.useState([])
     const [leverageValue, setLeverageValue] = React.useState(5)
     const [capitalValue, setCapitalValue] = React.useState('$10000')
+    const [authorized, setAuthorized] = React.useState(false)
+    const [currentPage, setCurrentPage] = React.useState(1)
+    const [rowsPerPage, setRowsPerPage] = React.useState(10)
+
 
     let binance = new ccxt.binance();
     binance.options = {
@@ -44,18 +49,49 @@ function DashboardPage() {
     }
 
     React.useEffect(() => {
+        try{
+            const checkToken = async() => {
+            const token = window.localStorage.getItem('token');
+            if (token) {
+                const {data} = await axios.get('/api/auth', {
+                    headers: {
+                        authorization: token
+                      }
+                });
+                data ? setAuthorized(true) : setAuthorized(false);
+            }
+        }
+        checkToken()
+
         const loadMarkets = async() => {
             const fundingRates = await binance.fetchFundingRates(coins)
             const tickers = await binance.fetchTickers(coins)
             setFundingRates(fundingRates)
             setTickerList(tickers)
             }
+
             loadMarkets()
         }
+        catch(err) {
+            console.log(err)
+        }
+        }
     , [])
-console.log(tickerList)
+
+    let indexOfLastRow = currentPage * rowsPerPage;
+    let indexOfFirstRow = indexOfLastRow - rowsPerPage;
+    let currentRows = tableData.slice(indexOfFirstRow, indexOfLastRow)
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber)
+        indexOfLastRow = currentPage * rowsPerPage;
+        indexOfFirstRow = indexOfLastRow - rowsPerPage;
+        currentRows = tableData.slice(indexOfFirstRow, indexOfLastRow)
+    }
+
   return (
     <>
+        {authorized ? <>
         <Navbar />
         <div className='dashboard-container'>
             <div className='sidebar-container'>
@@ -72,7 +108,7 @@ console.log(tickerList)
             <div className='trade-opps-container'>
                 <div className='title-bar'>
                     <div className='trade-opps-title'>
-                        <img id="money-icon" src={moneyIcon} />
+                        <img id="money-icon" src={moneyIcon} alt=""/>
                         <h2>Trade Opportunities</h2>
                     </div>
                     <div className='trade-opps-searchbar'>
@@ -93,7 +129,7 @@ console.log(tickerList)
                         </tr>
                     </thead>
                     <tbody className='table-body'>
-                        {tableData ? tableData.map((coin, i) => {
+                        {tableData ? currentRows.map((coin, i) => {
                             return (
                                 <tr key={i} className={i % 2 !== 0 ? 'light-row' : 'dark-row'}>
                                     <td><span>{coin.symbol}</span></td>
@@ -110,8 +146,11 @@ console.log(tickerList)
                          : <></>}
                     </tbody>
                 </table>
+                <Pagination currentPage={currentPage} rowsPerPage={rowsPerPage} totalRows={tableData.length} paginate={paginate}/>
             </div>
         </div>
+        </>
+        : <h1>NOT AUTHORISED</h1> }
     </>
   )
 }

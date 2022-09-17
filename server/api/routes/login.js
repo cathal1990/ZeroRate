@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const requireToken = async (req, res, next) => {
     try {
-      const authHeader = req.headers.authorization;
-      const token = authHeader && authHeader.split(' ')[1];
+      const token = req.headers.authorization;
       const user = await User.byToken(token);
       req.user = user;
       next();
@@ -16,25 +15,28 @@ const requireToken = async (req, res, next) => {
   };
 
 router.get('/', requireToken, async(req, res, next) => {
-if(req.user) {
-    res.send(req.user);
-} else {
-    res.sendStatus(404);
-}
+  try{
+    if(req.user) {
+        res.send(req.user);
+    } else {
+        res.sendStatus(404);
+    }
+  }
+  catch(err) {
+    next(err)
+  }
 });
 
 router.post('/', async (req, res, next) => {
     try{
         const user = await User.authenticate(req.body)
-        console.log(req.body)
-        // if(!user) {
-        //   res.sendStatus(404)
-        // }
+
         if(user) {
           const token = await user.generateToken();
           res.send(token);
+        }else {
+          res.sendStatus(404)
         }
-        res.sendStatus(404)
     }
     catch(err) {
         next(err);

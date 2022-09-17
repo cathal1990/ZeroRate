@@ -34,11 +34,11 @@ User.byToken = async function(token) {
         const user = await User.findByPk(payload.id);
         return user;
         }
-        const error = Error("Invalid Username or password");
+        const error = Error("Bad credentials");
         error.status = 401;
         throw error;
-    } catch (ex) {
-        const error = Error("Invalid Username or password");
+    } catch (e) {
+        const error = Error("Bad credentials");
         error.status = 401;
         throw error;
     }
