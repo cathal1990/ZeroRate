@@ -114,8 +114,9 @@ body {
   left: -9999px;
 }
 .login-container .login-form p {
-  font-size: 35px;
+  font-size: 40px;
   padding-bottom: 40px;
+  -webkit-text-stroke: 1px #e5e5e5;
 }
 .login-container .login-form #login-form {
   display: flex;
@@ -184,7 +185,7 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin: 10px;
+  margin: 10px 10px 0 10px;
 }
 .dashboard-container .trade-opps-container .pagination button {
   display: inline-block;

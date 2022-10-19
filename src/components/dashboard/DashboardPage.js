@@ -6,6 +6,8 @@ import axios from 'axios'
 const ccxt = require('ccxt');
 
 function DashboardPage() {
+    const [ftxMarkets, setFtxMarkets] = React.useState([])
+    const [binanceMarkets, setBinanceMarkets] = React.useState()
     const [fundingRates, setFundingRates] = React.useState([])
     const [tickerList, setTickerList] = React.useState([])
     const [leverageValue, setLeverageValue] = React.useState(5)
@@ -20,7 +22,9 @@ function DashboardPage() {
         'defaultType': 'future',
         'adjustForTimeDifference': 'true'
     }
-    // ftx.proxy = 'http://localhost:3000/dashboard/'
+
+    // let ftx = new ccxt.ftx();
+    // ftx.proxy = 'http://localhost:8080/'
 
     const tableData = [];
     let index = 0;
@@ -66,19 +70,21 @@ function DashboardPage() {
         const loadMarkets = async() => {
             const fundingRates = await binance.fetchFundingRates(coins)
             const tickers = await binance.fetchTickers(coins)
+            // const {result} = await ftx.publicGetFutures()
+            // setFtxMarkets(result.filter(coin => Number(coin.volumeUsd24h) > 1000000))
             setFundingRates(fundingRates)
             setTickerList(tickers)
-            }
+        }
 
-            loadMarkets()
-        }
-        catch(err) {
-            console.log(err)
-        }
-        }
-    , [])
+        loadMarkets()
+    }
+    catch(err) {
+        console.log(err)
+    }
+}
+, [])
 
-    let indexOfLastRow = currentPage * rowsPerPage;
+let indexOfLastRow = currentPage * rowsPerPage;
     let indexOfFirstRow = indexOfLastRow - rowsPerPage;
     let currentRows = tableData.slice(indexOfFirstRow, indexOfLastRow)
 

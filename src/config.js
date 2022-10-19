@@ -5,3 +5,4 @@ const coins = ['ETHUSDT', 'BTCUSDT', 'SOLUSDT', 'NEARUSDT', 'AVAXUSDT', 'HNTUSDT
 
 
 module.exports = {apiKey, secret, coins}
+
